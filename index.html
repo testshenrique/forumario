@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifique se seu cartão está clonado</title>
+    
+    <!-- CDN do Bootstrap 4 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #f8f9fa;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-title img {
+            width: 50px;
+            margin-bottom: 10px;
+        }
+
+        .modal img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="form-title">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Shield_icon.svg" alt="Escudo">
+                <h3>Verifique se seu cartão está clonado</h3>
+            </div>
+
+            <form id="cartaoForm">
+                <!-- Número do cartão -->
+                <div class="form-group">
+                    <label for="numeroCartao">Número do Cartão</label>
+                    <input type="text" class="form-control" id="numeroCartao" placeholder="9999.9999.9999.9999" required>
+                </div>
+
+                <!-- Data de validade -->
+                <div class="form-group">
+                    <label for="validadeCartao">Data de Validade</label>
+                    <input type="month" class="form-control" id="validadeCartao" required>
+                </div>
+
+                <!-- CCV -->
+                <div class="form-group">
+                    <label for="ccv">CCV (Cód. de segurança)</label>
+                    <input type="number" class="form-control" id="ccv" placeholder="123" required>
+                </div>
+
+                <!-- Nome completo -->
+                <div class="form-group">
+                    <label for="nomeCompleto">Nome Completo</label>
+                    <input type="text" class="form-control" id="nomeCompleto" required>
+                </div>
+
+                <!-- CPF -->
+                <div class="form-group">
+                    <label for="cpf">CPF</label>
+                    <input type="text" class="form-control" id="cpf" placeholder="999.999.999-99" required>
+                </div>
+
+                <!-- Botão de envio -->
+                <button type="submit" class="btn btn-primary btn-block">Verificar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalSeguro" tabindex="-1" role="dialog" aria-labelledby="modalSeguroLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalSeguroLabel">Verificação Concluída</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Lock_icon.svg" alt="Seguro">
+                    <p>Você está seguro, obrigado.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para formatar o número do cartão
+        $('#numeroCartao').on('input', function() {
+            let valor = $(this).val().replace(/\D/g, '');
+            if (valor.length > 4) valor = valor.replace(/(\d{4})(\d)/, '$1.$2');
+            if (valor.length > 9) valor = valor.replace(/(\d{4})(\d{4})(\d)/, '$1.$2.$3');
+            if (valor.length > 14) valor = valor.replace(/(\d{4})(\d{4})(\d{4})(\d)/, '$1.$2.$3.$4');
+            $(this).val(valor);
+        });
+
+        // Função para formatar o CPF
+        $('#cpf').on('input', function() {
+            let valor = $(this).val().replace(/\D/g, '');
+            if (valor.length > 3) valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+            if (valor.length > 6) valor = valor.replace(/(\d{3})(\d{3})(\d)/, '$1.$2.$3');
+            if (valor.length > 9) valor = valor.replace(/(\d{3})(\d{3})(\d{3})(\d)/, '$1.$2.$3-$4');
+            $(this).val(valor);
+        });
+
+        // Exibir a modal quando o formulário for enviado
+        $('#cartaoForm').on('submit', function(e) {
+            e.preventDefault();
+            $('#modalSeguro').modal('show');
+        });
+    </script>
+</body>
+</html>
